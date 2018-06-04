@@ -1,0 +1,34 @@
+{
+    "name": "ngx-prober",
+    "version": "0.0.1",
+    "description": "Library for easy and simple Angular testing",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/johnyborek/ngx-prober.git"
+    },
+    "keywords": [
+        "angular",
+        "ngx",
+        "unit test",
+        "unit testing",
+        "test",
+        "testing",
+        "easy",
+        "simple",
+        "simplified"
+    ],
+    "license": "MIT",
+    "peerDependencies": {
+        "@angular/common": ">=6",
+        "@angular/compiler": ">=6",
+        "@angular/core": ">=6",
+        "@angular/http": ">=6",
+        "@angular/platform-browser": ">=6",
+        "@angular/router": ">=6",
+        "@types/jasmine": ">=2",
+        "jasmine-core": ">=2",
+        "rxjs": ">=6"
+    },
+    "readme": "README.md"
+}
