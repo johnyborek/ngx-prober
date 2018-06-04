@@ -34,10 +34,12 @@ describe('MySampleComponent', () => {
 describe('MySampleComponent', () => {
   const serviceMock: SomeService;
 
-  // Second parameter of 'probeComponent' is the type of module which owns the tested component. Scroll to the bottom for explanation why it's needed.
+  // Second parameter of 'probeComponent' is the type of module which owns the tested component.
+  // Scroll to the bottom for explanation why it's needed.
   const probe = probeComponent(MySampleComponent, ModuleOfMySampleComponent, {
     providers: [
-      // This will dynamically create and inject 'SomeService' mock. Real code of 'SomeService' class will not be called.
+      // This will dynamically create and inject 'SomeService' mock.
+      // Real code of 'SomeService' class will not be called.
       {provide: SomeService, mock: true}
     ],
     fixtureInit: () => {
@@ -74,9 +76,6 @@ describe('MySampleComponent', () => {
 * ``asSpy(functionRef: Function): jasmine.Spy`` - casts a function reference to Jasmine Spy. Fails if given parameter is not a Jasmine Spy.  
 * ``ActivatedRouteStub`` - simple mock for ActivatedRoute class. Code is taken from Angular documentation: https://angular.io/guide/testing.
 
-Usually it should contain at least the module where tested component is declared, so we don't need to duplicate the module dependencies in test code.
-It can contain more modules if our test case requires it.
-
 ### ComponentProbeConfig attributes
 * ``providers`` - service providers required by component under test. 
  Similar to ``providers`` of ``TestBed.configureTestingModule``, but ``provider`` is extended with some new optional attributes:
@@ -85,11 +84,11 @@ It can contain more modules if our test case requires it.
   * ``directive`` - injects the provider to given directive scope, instead of module scope.
 * ``fixtureInit`` - code that is run before every test case, after the component creation but before running the test case.
 * ``modules`` - additional modules which are imported to test fixture. Passed to ``imports`` of ``TestBed.configureTestingModule``.
- There's no need to import BrowserAnimationsModule or NoopAnimationsModule, the latter one is added automatically.
+ There's no need to import ``BrowserAnimationsModule`` or ``NoopAnimationsModule``, the latter one is added automatically.
 * ``declarations`` - additional components needed by our test. Passed to ``declarations`` of ``TestBed.configureTestingModule``.
  There's no need to declare component under test, it's added automatically.
 * ``detectChangesOnInit`` - runs change detection after creating test fixture. Defaults to ``true``.
-* ``includeNoopAnimationModule`` - automatically imports NoopAnimationsModule. Defaults to ``true``.  
+* ``includeNoopAnimationModule`` - automatically imports ``NoopAnimationsModule``. Defaults to ``true``.  
 * ``mockedComponents`` - component classes which should be replaced with stubs, instead of using real implementation. Experimental functionality.
 
 ### ComponentProbe attributes
@@ -108,13 +107,13 @@ It can contain more modules if our test case requires it.
 ### HttpServiceProbeConfig attributes
 * ``providers`` - service providers required by the service under test.
 * ``fixtureInit`` - code that is run before every test case, before the tested service instance is created.
-* ``modules`` - additional modules which are imported to test fixture. HttpClientTestingModule is included automatically, no need to add it here.
+* ``modules`` - additional modules which are imported to test fixture. ``HttpClientTestingModule`` is included automatically, no need to add it here.
 * ``autoVerifyAfterEach`` - decides if ``HttpTestingController.verify()`` method should be called automatically after every test case. Defaults to true.
 
 ### HttpServiceProbe attributes
 * ``testBed`` - Angular TestBed.
 * ``service`` - instance of service under test.
-* ``httpController`` - HttpTestingController instance
+* ``httpController`` - ``HttpTestingController`` instance
 * ``get(type): T`` - retrieves service from root Angular scope (similar to ``TestBed.get``).
 * ``expect(...): TestRequest`` - base function for defining expected HTTP call, and replying to it with given content.
  Flexible but verbose, consider using other functions instead. 
