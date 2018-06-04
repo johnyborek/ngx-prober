@@ -18,7 +18,7 @@ function cloneDefaultConfig<T>(o: T) {
   return clone;
 }
 
-export function probeComponent<C>(componentType: Type<C>, componentModule: Type<any>, probeConfig?: ComponentProbeConfig): ComponentProbe<C> {
+export function probeComponent<C>(componentType: Type<C>, componentModule?: Type<any>, probeConfig?: ComponentProbeConfig): ComponentProbe<C> {
   const config = Object.assign({}, cloneDefaultConfig(defaultComponentProbeConfig), probeConfig);
   return new ComponentProbe<C>(componentType, componentModule, config);
 }

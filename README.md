@@ -1,34 +1,138 @@
 # ngx-prober
 
-Library for improving Unit Tests of Angular 2+ projects. Removes some boilerplate code from the tests, which makes it much more readable.
+Library for improving Unit Tests of Angular 2+ projects. It provides the following functionality:
+* Cleaner and simpler API for testing Angular projects. 
+* Easy mocking of TypeScript classes.
+* Simpler injection to Component and Directive scopes.
+* Dynamic mocking of injected provider classes.
 
-## Main features
-Library contains three classes:
-* ``ComponentProbe`` - template for testing Angular Components. Sets up a component and its fixture to be ready for test.
-Its constructor accepts these arguments:
-  * ``componentType`` - class of the component which we want to test.
-  * ``modules`` - types of modules included in test fixture.
-Usually it should contain at least the module where tested component is declared, so we don't need to duplicate the module dependencies in test code.
-It can contain more modules if our test case requires it.
-  * ``providers`` - service providers required by component under test. Allows for dynamic mock generation, or for using original implementation classes.
-  * ``fixtureInit`` - code that is run before every test case, after the component creation but before running the test case.
-  * ``mockedComponents`` - components which should be replaced with mocks, instead of using real implementation.
-  * ``declarations`` - declarations of other components needed by our test, which are not part of any imported module.  
-* ``HttpServiceProbe`` - template for testing Services, which use Angular HttpClient service. Sets up a Service and its fixture to be ready for test.
-Its constructor accepts these arguments:
-  * ``serviceType`` - class of the service we want to test.
-  * ``providers`` - service providers required by the service under test. Allows for dynamic mock generation, or for using original implementation classes.
-  * ``fixtureInit`` - code that is run before every test case, before the tested service instance is created.
-  * ``modules`` - types of modules included in test fixture. HttpClientTestingModule is included automatically, so usually this field will be empty.
-  * ``autoVerifyAfterEach`` - decides if HttpTestingController.verify() method should be automatically run after every test case. Defaults to true.
-* ``Mock`` - support for creation of mock objects by type. 
-* ``ActivatedRouteStub`` - stub for Angular ActivatedRoute, for testing controllers with URL params. 
+Using ngx-prober results in much simpler and more readable unit tests.
+It removes a lot of boilerplate code and lets you concentrate on real test scenario.
+ 
 
 ## Installation
 
 `npm install ngx-prober --save-dev`
 
-## Usage
+
+## Basic example
+
+``` typescript
+describe('MySampleComponent', () => {
+  const probe = probeComponent(MySampleComponent);
+  
+  it('should create', () => {
+    expect(probe.component).toBeTruthy();
+  });
+});
+```
+
+
+## And bit more complex one...
+
+``` typescript
+describe('MySampleComponent', () => {
+  const serviceMock: SomeService;
+
+  // Second parameter of 'probeComponent' is the type of module which owns the tested component. Scroll to the bottom for explanation why it's needed.
+  const probe = probeComponent(MySampleComponent, ModuleOfMySampleComponent, {
+    providers: [
+      // This will dynamically create and inject 'SomeService' mock. Real code of 'SomeService' class will not be called.
+      {provide: SomeService, mock: true}
+    ],
+    fixtureInit: () => {
+      serviceMock = probe.get(SomeService);
+      
+      // All functions of 'serviceMock' are Jasmine spies.
+      // 'asSpy' function casts a function to 'jasmine.Spy', so you can use regular Jasmine API on returned object.  
+      asSpy(serviceMock.someFunction).and.returnValue({foo: 'bar'});
+    }
+  });
+  
+  it('should call mock', () => {
+    // Setting @Input value
+    probe.component.someInput = 'my-value';
+  
+    // Listening to @Output event
+    probe.component.someEvent.subscribe(() => {
+      serviceMock.someFunction();
+    });
+    
+    probe.detectChanges();
+    expect(service.someFunction).toHaveBeenCalled();
+  });
+});
+```
+
+
+## API overview
+
+### Main API
+* ``probeComponent(componentType: Type<C>, componentModule: Type<any>, config: ComponentProbeConfig): ComponentProbe<C>`` - sets up a fixture for testing Component.
+* ``probeHttpService(serviceType: Type<S>, config: HttpServiceProbeConfig): HttpServiceProbe<S>`` - sets up a fixture for testing service which uses HttpClient.
+* ``mock(mockedType: Type<T>): T`` - creates dynamic mock object for given Type.
+* ``asSpy(functionRef: Function): jasmine.Spy`` - casts a function reference to Jasmine Spy. Fails if given parameter is not a Jasmine Spy.  
+* ``ActivatedRouteStub`` - simple mock for ActivatedRoute class. Code is taken from Angular documentation: https://angular.io/guide/testing.
+
+Usually it should contain at least the module where tested component is declared, so we don't need to duplicate the module dependencies in test code.
+It can contain more modules if our test case requires it.
+
+### ComponentProbeConfig attributes
+* ``providers`` - service providers required by component under test. 
+ Similar to ``providers`` of ``TestBed.configureTestingModule``, but ``provider`` is extended with some new optional attributes:
+  * ``mock`` - when set to true, creates dynamic mock object instead of using real class. Defaults to false.
+  * ``component`` - injects the provider to given component scope, instead of module scope.
+  * ``directive`` - injects the provider to given directive scope, instead of module scope.
+* ``fixtureInit`` - code that is run before every test case, after the component creation but before running the test case.
+* ``modules`` - additional modules which are imported to test fixture. Passed to ``imports`` of ``TestBed.configureTestingModule``.
+ There's no need to import BrowserAnimationsModule or NoopAnimationsModule, the latter one is added automatically.
+* ``declarations`` - additional components needed by our test. Passed to ``declarations`` of ``TestBed.configureTestingModule``.
+ There's no need to declare component under test, it's added automatically.
+* ``detectChangesOnInit`` - runs change detection after creating test fixture. Defaults to ``true``.
+* ``includeNoopAnimationModule`` - automatically imports NoopAnimationsModule. Defaults to ``true``.  
+* ``mockedComponents`` - component classes which should be replaced with stubs, instead of using real implementation. Experimental functionality.
+
+### ComponentProbe attributes
+* ``testBed`` - Angular TestBed.
+* ``fixture`` - Angular test component fixture.
+* ``component`` - instance of component under test.
+* ``nativeElement`` - HTML element for component under test.
+* ``debugElement`` - debug element for component under test.
+* ``get(type): T`` - retrieves service from root Angular scope (similar to ``TestBed.get``).
+* ``getFromChildComponent(type, childComponentType): T`` - retrieves service from component scope.
+* ``getFromDirective(type, directiveType): T`` - retrieves service from directive scope.
+* ``detectChanges()`` - runs change detection.
+* ``queryByCss(selector): DebugElement`` - returns first element matching given css selector 
+* ``queryAllByCss(selector): DebugElement[]`` - returns all elements matching given css selector
+
+### HttpServiceProbeConfig attributes
+* ``providers`` - service providers required by the service under test.
+* ``fixtureInit`` - code that is run before every test case, before the tested service instance is created.
+* ``modules`` - additional modules which are imported to test fixture. HttpClientTestingModule is included automatically, no need to add it here.
+* ``autoVerifyAfterEach`` - decides if ``HttpTestingController.verify()`` method should be called automatically after every test case. Defaults to true.
+
+### HttpServiceProbe attributes
+* ``testBed`` - Angular TestBed.
+* ``service`` - instance of service under test.
+* ``httpController`` - HttpTestingController instance
+* ``get(type): T`` - retrieves service from root Angular scope (similar to ``TestBed.get``).
+* ``expect(...): TestRequest`` - base function for defining expected HTTP call, and replying to it with given content.
+ Flexible but verbose, consider using other functions instead. 
+* ``expectSuccess(...): TestRequest`` - base function for defining expected HTTP call, and replying with success.
+ Consider using dedicated functions for HTTP methods, before using this one. 
+* ``expectGet(...): TestRequest`` - function for defining expected GET call, and replying with success. 
+* ``expectPost(...): TestRequest`` - similar to above
+* ``expectPut(...): TestRequest`` - similar to above
+* ``expectDelete(...): TestRequest`` - similar to above
+* ``expectError(...): TestRequest`` - base function for defining expected HTTP call, and replying with error.
+ Consider using dedicated functions for HTTP methods, before using this one. 
+* ``expectGetError(...): TestRequest`` - function for defining expected GET call, and replying with error. 
+* ``expectPostError(...): TestRequest`` - similar to above
+* ``expectPutError(...): TestRequest`` - similar to above
+* ``expectDeleteError(...): TestRequest`` - similar to above
+
+
+## Detailed examples
 
 ### Basic tests of ``MySampleComponent``.
 ``` typescript
@@ -520,3 +624,25 @@ Remarks:
 ## Limitations
 * Mocking mechanism does not support interface types. Only class types can be mocked.
 * Jasmine functionality ``mock.someFuntction.and.callThrough`` does not work for mocks generated by class type. Original object is not created when generating mock, so there's no instance which could handle ``callThrough`` behavior.
+
+
+## Why to import module which owns the component, into the test fixture?
+
+``` typescript
+  // Second parameter of 'probeComponent' is the type of module which owns the tested component.
+  const probe = probeComponent(MySampleComponent, ModuleOfMySampleComponent, { ... });
+```
+
+Here's the promised explanation :)  
+The module declaration contains dependencies of tested component. Usually we need some of these dependencies in test fixture as well.
+Most popular solution is to declare these dependencies twice:
+* in declaration of module which owns the component (for production use)
+* in test fixture setup (for unit tests)
+
+I don't like duplication, so I'm using another approach:
+* import a module which owns the component into the test fixture
+* mock the module dependencies which you don't need
+
+I believe it makes the code for test initialization much shorter and easier to maintain. 
+That's why ``probeComponent`` function encourages you to pass the component's module as second parameter.
+If you don't like it, just pass ``undefined`` and do the duplication :)
