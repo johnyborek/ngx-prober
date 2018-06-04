@@ -133,19 +133,7 @@ describe('MySampleComponent', () => {
 
 ## Detailed examples
 
-### Basic tests of ``MySampleComponent``.
-``` typescript
-describe('MySampleComponent', () => {
-  const probe = probeComponent(MySampleComponent);
-  
-  it('should create', () => {
-    expect(probe.component).toBeTruthy();
-  });
-});
-```
-  
-Usually it's convenient to include the module which contains the component.  
-Test fixture will include "declarations" and "imports" of given module then, so we don't need to duplicate them in test code.    
+### Basics test setup
 ``` typescript
 describe('MySampleComponent', () => {
   const probe = probeComponent(MySampleComponent, MySampleModule);
@@ -155,26 +143,17 @@ describe('MySampleComponent', () => {
   });
 });
 ```
+``MySampleModule`` is the module that owns ``MySampleComponent``.
+Test fixture will include ``declarations``, ``imports``  and ``providers`` of ``MySampleModule``, so we don't need to duplicate them in test code.
+We can later mock the things we don't need.    
   
-You can also pass more component declarations:
-``` typescript
-describe('MySampleComponent', () => {
-  const probe = probeComponent(MySampleComponent, {
-    declarations: [SomeOtherComponent]
-  });
-  
-  it('should create', () => {
-    expect(probe.component).toBeTruthy();
-  });
-});
-```
-
-
-### Including more modules in test setup
+### Including additional modules and components in test setup
 ``` typescript
 describe('MySampleComponent', () => {
   const probe = probeComponent(MySampleComponent, MySampleModule, {
-    modules: [BrowserAnimationsModule]
+    declarations: [SomeOtherComponent],
+    modules: [BrowserAnimationsModule, SomeOtherModule],
+    includeNoopAnimationModule: false
   });
   
   it('should create', () => {
@@ -200,7 +179,7 @@ describe('MySampleComponent', () => {
 });
 ```
 
-### Verifying generated HTML
+### Verifying generated HTML content
 ``` typescript
 describe('MySampleComponent', () => {
   const probe = probeComponent(MySampleComponent, MySampleModule);
@@ -253,9 +232,9 @@ describe('MySampleComponent', () => {
 ```
 
 Remarks:
-* When using ``useValue``, remember that Angular does not inject provided object instance directly. 
-* It creates the clone of the object, and injects the clone. 
-* So if you need the provided object instance in your test code, you need to fetch the clone from test fixture using ``ComponentProbe.get`` (as described below).
+* Angular always clones the object passed in ``useValue``, original instance is not used. 
+* If you need that object later, don't use the original one from ``useValue``. You need to fetch the cloned one, 
+ using ``probe.get(...)`` (as described below).
 
 ### Handling component-scoped and directive-scoped providers
 ``` typescript
@@ -290,7 +269,7 @@ describe('MySampleComponent', () => {
 ```
 
 Remarks:
-* It only supports module-scoped services, and top-level component-scoped services (i.e. services in MySampleModule and MySampleComponent scope).
+* ``probe.get(...)`` only retrieves module-scoped services, and top-level component-scoped services (i.e. services in MySampleModule and MySampleComponent scope).
 * Next section describes how to fetch directive-scoped services and nested child-scoped services. 
 
 ### Retrieving component-scoped service instances from child components, and directive-scoped service instances
@@ -372,7 +351,7 @@ describe('MySampleComponent', () => {
 ```
 
 Remarks:
-* This is done with regular Jasmine API
+* This is done with regular Jasmine API.
 
 ### Mocking child components
 ``` typescript
@@ -634,7 +613,7 @@ Remarks:
 
 Here's the promised explanation :)  
 The module declaration contains dependencies of tested component. Usually we need some of these dependencies in test fixture as well.
-Most popular solution is to declare these dependencies twice:
+The most popular solution is to declare these dependencies twice:
 * in declaration of module which owns the component (for production use)
 * in test fixture setup (for unit tests)
 
@@ -642,6 +621,6 @@ I don't like duplication, so I'm using another approach:
 * import a module which owns the component into the test fixture
 * mock the module dependencies which you don't need
 
-I believe it makes the code for test initialization much shorter and easier to maintain. 
+From my experience, it makes the code for test initialization much shorter and easier to maintain. 
 That's why ``probeComponent`` function encourages you to pass the component's module as second parameter.
 If you don't like it, just pass ``undefined`` and do the duplication :)
