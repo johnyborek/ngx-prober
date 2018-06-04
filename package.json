@@ -8,7 +8,7 @@
         "build": "tsc",
         "copy-files": "cpx \"./target/tsc-out/lib/**/*.*\" ./dist/lib && cpx ./src/package.json ./dist && cpx README.md ./dist && cpx \"./target/tsc-out/index.*\" ./dist",
         "test": "ng test --code-coverage",
-        "lint": "ng lint --force --format checkstyle > target/checkstyle-lint-result.xml",
+        "lint": "ng lint",
         "dist": "npm run clean && npm test && npm run lint && npm run build && npm run copy-files"
     },
     "dependencies": {
@@ -46,7 +46,6 @@
         "karma-cli": "^1.0.1",
         "karma-coverage-istanbul-reporter": "^2.0.1",
         "karma-jasmine": "^1.1.2",
-        "karma-junit-reporter": "^1.2.0",
         "karma-mocha-reporter": "^2.2.5",
         "npm-check-updates": "^2.14.2",
         "rimraf": "^2.6.2",
