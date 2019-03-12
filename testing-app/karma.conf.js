@@ -1,6 +1,6 @@
 module.exports = (config) => {
   config.set({
-    basePath: '',
+    basePath: '..',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -14,7 +14,7 @@ module.exports = (config) => {
     },
     reporters: ['mocha', 'coverage-istanbul'],
     coverageIstanbulReporter: {
-      dir: 'target/coverage'
+      dir: '../target/coverage'
     },
     port: 9876,
     colors: true,

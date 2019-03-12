@@ -1,4 +1,4 @@
-import { ActivatedRouteStub } from './activated-route.stub';
+import { ActivatedRouteStub } from '../../../src/lib/router-utils/activated-route.stub';
 
 describe('ActivatedRouteStub', () => {
   it('should provide route params', (done) => {

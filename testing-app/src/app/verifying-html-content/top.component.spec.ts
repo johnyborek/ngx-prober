@@ -1,4 +1,4 @@
-import { probeComponent } from '../..';
+import { probeComponent } from '../../../../src/index';
 import { TestingModule } from './testing.module';
 import { TopComponent } from './top.component';
 

@@ -1,4 +1,4 @@
-import { probeComponent } from '../..';
+import { probeComponent } from '../../../../src/index';
 import { SomeService } from '../common/sample.service';
 import { ChildComponent } from './child.component';
 import { TestingModule } from './testing.module';

@@ -1,4 +1,4 @@
-import { Mocker } from './mocker';
+import { Mocker } from '../../../src/lib/mock/mocker';
 
 class ParentClass {
   parentFunction() {}

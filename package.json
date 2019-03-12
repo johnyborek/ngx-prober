@@ -33,10 +33,10 @@
     "scripts": {
         "clean": "rimraf ./dist && rimraf ./target",
         "build": "tsc",
-        "copy-files": "cpx \"./target/tsc-out/lib/**/*.*\" ./dist/lib && cpx \"./target/tsc-out/index.*\" ./dist",
-        "test": "ng test --code-coverage",
+        "copy-files": "cpx \"./target/tsc-out/src/lib/**/*.*\" ./dist/lib && cpx \"./target/tsc-out/src/index.*\" ./dist",
+        "test": "cd testing-app && ng test --code-coverage && cd ..",
         "lint": "ng lint",
-        "dist": "npm run clean && npm test && npm run lint && npm run build && npm run copy-files"
+        "dist": "npm run clean && npm test && npm run build && npm run copy-files"
     },
     "peerDependencies": {
         "@angular/common": ">=6",

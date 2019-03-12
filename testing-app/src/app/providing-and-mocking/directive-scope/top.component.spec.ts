@@ -1,4 +1,4 @@
-import { asSpy, probeComponent } from '../../..';
+import { asSpy, probeComponent } from '../../../../../src/index';
 import { SomeService } from '../../common/sample.service';
 import { SampleDirective } from './sample.directive';
 import { TestingModule } from './testing.module';

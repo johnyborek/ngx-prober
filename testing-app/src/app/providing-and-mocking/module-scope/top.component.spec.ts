@@ -1,4 +1,4 @@
-import { asSpy, probeComponent } from '../../..';
+import { asSpy, probeComponent } from '../../../../../src/index';
 import { SomeService } from '../../common/sample.service';
 import { TestingModule } from './testing.module';
 import { TopComponent } from './top.component';

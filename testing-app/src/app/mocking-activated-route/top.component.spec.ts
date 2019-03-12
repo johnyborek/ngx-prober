@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub, probeComponent } from '../..';
+import { ActivatedRouteStub, probeComponent } from '../../../../src/index';
 import { TestingModule } from './testing.module';
 import { TopComponent } from './top.component';
 

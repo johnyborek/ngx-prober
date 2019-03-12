@@ -1,4 +1,4 @@
-import { asSpy, mock } from '../..';
+import { asSpy, mock } from '../../../../src/index';
 import { SomeService } from '../common/sample.service';
 
 describe('MockingServices', () => {

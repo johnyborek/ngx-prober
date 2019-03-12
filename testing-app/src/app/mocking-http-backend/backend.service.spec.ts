@@ -1,4 +1,4 @@
-import { probeHttpService } from '../..';
+import { probeHttpService } from '../../../../src/index';
 import { BackendService } from './backend.service';
 
 describe('BackendService', () => {
