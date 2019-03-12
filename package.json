@@ -2,14 +2,52 @@
     "name": "ngx-prober",
     "version": "0.0.1",
     "description": "Library for easy and simple Angular testing",
+    "author": {
+        "name": "Rafal Borek",
+        "email": "rr.borek@gmail.com"
+    },
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/johnyborek/ngx-prober.git"
+    },
+    "keywords": [
+        "angular",
+        "ngx",
+        "unit test",
+        "unit testing",
+        "test",
+        "testing",
+        "easy",
+        "simple",
+        "simplified"
+    ],
     "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/johnyborek/ngx-prober/issues"
+    },
+    "homepage": "https://github.com/johnyborek/ngx-prober",
+    "files": [
+      "dist/**/*"
+    ],
     "scripts": {
         "clean": "rimraf ./dist && rimraf ./target",
         "build": "tsc",
-        "copy-files": "cpx \"./target/tsc-out/lib/**/*.*\" ./dist/lib && cpx ./src/package.json ./dist && cpx README.md ./dist && cpx \"./target/tsc-out/index.*\" ./dist",
+        "copy-files": "cpx \"./target/tsc-out/lib/**/*.*\" ./dist/lib && cpx \"./target/tsc-out/index.*\" ./dist",
         "test": "ng test --code-coverage",
         "lint": "ng lint",
         "dist": "npm run clean && npm test && npm run lint && npm run build && npm run copy-files"
+    },
+    "peerDependencies": {
+        "@angular/common": ">=6",
+        "@angular/compiler": ">=6",
+        "@angular/core": ">=6",
+        "@angular/http": ">=6",
+        "@angular/platform-browser": ">=6",
+        "@angular/router": ">=6",
+        "@types/jasmine": ">=2",
+        "jasmine-core": ">=2",
+        "rxjs": ">=6"
     },
     "dependencies": {
         "@angular/animations": "^7.2.8",

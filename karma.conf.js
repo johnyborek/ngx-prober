@@ -14,8 +14,6 @@ module.exports = (config) => {
     },
     reporters: ['mocha', 'coverage-istanbul'],
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: ['html'],
-      fixWebpackSourcePaths: true,
       dir: 'target/coverage'
     },
     port: 9876,
