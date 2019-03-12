@@ -17,6 +17,6 @@ describe('ActivatedRouteStub', () => {
         expect(params['param2']).toEqual('another-val');
         done();
       });
-    })
+    });
   });
 });
