@@ -12,12 +12,13 @@
         "url": "https://github.com/johnyborek/ngx-prober.git"
     },
     "keywords": [
-        "angular unit test",
-        "angular tests",
-        "angular simplified tests",
-        "angular easy tests",
-        "ngx test",
         "angular",
+        "test",
+        "testing",
+        "easy",
+        "simple",
+        "simplified",
+        "unit",
         "ngx"
     ],
     "license": "MIT",
