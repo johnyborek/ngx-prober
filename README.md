@@ -7,7 +7,7 @@
 ![npm](https://img.shields.io/npm/v/ngx-prober.svg?color=blue)
 ![GitHub stars](https://img.shields.io/github/stars/johnyborek/ngx-prober.svg?style=social)
 
-Library for improving Unit Tests of Angular 2+ projects. It provides the following functionality:
+Library for improving Unit Tests of Angular 2+ projects - tested up to Angular 7. It provides the following functionality:
 * Cleaner and simpler API for testing Angular projects. 
 * Easy mocking of TypeScript classes.
 * Simpler injection to Component and Directive scopes.
