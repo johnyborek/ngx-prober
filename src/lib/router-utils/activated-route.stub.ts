@@ -1,21 +1,25 @@
-import { convertToParamMap, ParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, ParamMap, Params } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export class ActivatedRouteStub {
-  private _testParamMap: ParamMap;
-  get testParamMap() {
-    return this._testParamMap;
+  private testParams: Params = {};
+
+  get testParamMap(): Params {
+    return this.testParams;
   }
 
-  set testParamMap(params: {}) {
-    this._testParamMap = convertToParamMap(params);
-    this.subject.next(this._testParamMap);
+  set testParamMap(params: Params) {
+    this.testParams = params;
+    this.paramsSubject.next(this.testParams);
+    this.paramMapSubject.next(convertToParamMap(this.testParams));
   }
 
-  private subject = new BehaviorSubject(convertToParamMap(this.testParamMap));
-  paramMap: Observable<ParamMap> = this.subject.asObservable();
+  private paramMapSubject = new BehaviorSubject(convertToParamMap(this.testParams));
+  public paramMap: Observable<ParamMap> = this.paramMapSubject.asObservable();
+  private paramsSubject = new BehaviorSubject(this.testParams);
+  public params: Observable<Params> = this.paramsSubject.asObservable();
 
-  get snapshot() {
-    return {paramMap: this.testParamMap};
+  get snapshot(): ActivatedRouteSnapshot {
+    return { paramMap: convertToParamMap(this.testParams), params: this.testParams } as any;
   }
 }

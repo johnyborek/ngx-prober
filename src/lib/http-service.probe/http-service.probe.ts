@@ -8,10 +8,9 @@ import { HttpServiceProbeConfig } from './http-service.probe.config';
 class HttpServiceProbeInitializer<S> {
   private testBed: typeof TestBed;
 
-  constructor(private serviceType: Type<S>, private config: HttpServiceProbeConfig) {
-  }
+  constructor(private serviceType: Type<S>, private config: HttpServiceProbeConfig) {}
 
-  init(): typeof TestBed {
+  public init(): typeof TestBed {
     this.createProviderMocks();
     this.setupHttpClient();
     this.configureTestingModule();
@@ -19,7 +18,7 @@ class HttpServiceProbeInitializer<S> {
   }
 
   private createProviderMocks(): void {
-    this.config.providers.forEach((provider) => {
+    this.config.providers.forEach(provider => {
       if (provider.mock === true) {
         provider.useValue = mock(provider.provide);
       }
@@ -36,24 +35,26 @@ class HttpServiceProbeInitializer<S> {
 
   private configureTestingModule(): void {
     this.testBed = TestBed.configureTestingModule({
-      imports: <any>this.config.modules,
-      providers: [this.serviceType, ...this.config.providers]
+      imports: this.config.modules as any,
+      providers: [this.serviceType, ...this.config.providers],
     });
   }
 }
 
 export interface ResponseOptions {
-  headers?: HttpHeaders | {
-    [name: string]: string | string[];
-  };
+  headers?:
+    | HttpHeaders
+    | {
+        [name: string]: string | string[];
+      };
   status?: number;
   statusText?: string;
 }
 
 export class HttpServiceProbe<S> {
-  testBed: typeof TestBed;
-  service: S;
-  httpController: HttpTestingController;
+  public testBed: typeof TestBed;
+  public service: S;
+  public httpController: HttpTestingController;
 
   constructor(private serviceType: Type<S>, private config?: HttpServiceProbeConfig) {
     beforeEach(() => {
@@ -72,12 +73,17 @@ export class HttpServiceProbe<S> {
     });
   }
 
-  get<T>(type: Type<T>): T {
+  public get<T>(type: Type<T>): T {
     return this.testBed.get(type);
   }
 
-  expect(method: string, url: string, requestBody?: any, responseBody: any = '',
-         options: ResponseOptions = {}): TestRequest {
+  public expect(
+    method: string,
+    url: string,
+    requestBody?: any,
+    responseBody: any = '',
+    options: ResponseOptions = {},
+  ): TestRequest {
     const testRequest = this.httpController.expectOne(url);
     expect(testRequest.request.method).toEqual(method);
     if (requestBody) {
@@ -87,8 +93,14 @@ export class HttpServiceProbe<S> {
     return testRequest;
   }
 
-  expectSuccess(method: string, url: string, requestBody?: any, responseBody?: any,
-                contentType = 'application/json', accept = 'application/json'): TestRequest {
+  public expectSuccess(
+    method: string,
+    url: string,
+    requestBody?: any,
+    responseBody?: any,
+    contentType = 'application/json',
+    accept = 'application/json',
+  ): TestRequest {
     let headers = new HttpHeaders();
     if (accept) {
       headers = headers.append('Accept', accept);
@@ -96,46 +108,58 @@ export class HttpServiceProbe<S> {
     if (contentType) {
       headers = headers.append('Content-Type', contentType);
     }
-    return this.expect(method, url, requestBody, responseBody, {headers: headers});
+    return this.expect(method, url, requestBody, responseBody, { headers });
   }
 
-  expectGet(url: string, responseBody: any, accept = 'application/json'): TestRequest {
+  public expectGet(url: string, responseBody: any, accept = 'application/json'): TestRequest {
     return this.expectSuccess('GET', url, undefined, responseBody, undefined, accept);
   }
 
-  expectPost(url: string, requestBody: any, contentType = 'application/json', accept = 'application/json', responseBody?: any): TestRequest {
+  public expectPost(
+    url: string,
+    requestBody: any,
+    contentType = 'application/json',
+    accept = 'application/json',
+    responseBody?: any,
+  ): TestRequest {
     return this.expectSuccess('POST', url, requestBody, responseBody, contentType, accept);
   }
 
-  expectPut(url: string, requestBody: any, contentType = 'application/json', accept = 'application/json', responseBody?: any): TestRequest {
+  public expectPut(
+    url: string,
+    requestBody: any,
+    contentType = 'application/json',
+    accept = 'application/json',
+    responseBody?: any,
+  ): TestRequest {
     return this.expectSuccess('PUT', url, requestBody, responseBody, contentType, accept);
   }
 
-  expectDelete(url: string, accept = 'application/json', responseBody?: any): TestRequest {
+  public expectDelete(url: string, accept = 'application/json', responseBody?: any): TestRequest {
     return this.expectSuccess('DELETE', url, undefined, responseBody, undefined, accept);
   }
 
-  expectError(method: string, url: string, requestBody: any, responseStatus: number): TestRequest {
+  public expectError(method: string, url: string, requestBody: any, responseStatus: number): TestRequest {
     const options: ResponseOptions = {
       status: responseStatus,
-      statusText: 'Fake error body'
+      statusText: 'Fake error body',
     };
     return this.expect(method, url, requestBody, undefined, options);
   }
 
-  expectGetError(url: string, responseStatus: number): TestRequest {
+  public expectGetError(url: string, responseStatus: number): TestRequest {
     return this.expectError('GET', url, undefined, responseStatus);
   }
 
-  expectPostError(url: string, requestBody: any, responseStatus: number): TestRequest {
+  public expectPostError(url: string, requestBody: any, responseStatus: number): TestRequest {
     return this.expectError('POST', url, requestBody, responseStatus);
   }
 
-  expectPutError(url: string, requestBody: any, responseStatus: number): TestRequest {
+  public expectPutError(url: string, requestBody: any, responseStatus: number): TestRequest {
     return this.expectError('PUT', url, requestBody, responseStatus);
   }
 
-  expectDeleteError(url: string, responseStatus: number): TestRequest {
+  public expectDeleteError(url: string, responseStatus: number): TestRequest {
     return this.expectError('DELETE', url, undefined, responseStatus);
   }
 }
