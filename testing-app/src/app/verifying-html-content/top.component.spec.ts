@@ -14,7 +14,7 @@ describe('HtmlContentVerification', () => {
   });
 
   it('should contain tag with attribute of given value', () => {
-    expect(probe.queryByCss('h1').attributes['class']).toEqual('header');
+    expect(probe.queryByCss('h1').attributes.class).toEqual('header');
   });
 
   it('should examine nested nativeElement', () => {

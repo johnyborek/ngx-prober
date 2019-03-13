@@ -32,7 +32,7 @@ describe('ModuleScopeProvider', () => {
 
 describe('ModuleScopeProvider', () => {
   class StubService {
-    getText() {
+    public getText() {
       return 'useStubClass';
     }
   }

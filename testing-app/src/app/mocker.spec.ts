@@ -1,12 +1,12 @@
 import { Mocker } from '../../../src/lib/mock/mocker';
 
 class ParentClass {
-  parentFunction() {}
+  public parentFunction() {}
   protected parentProtectedFunction() {}
 }
 
 class ChildClass extends ParentClass {
-  childFunction() {}
+  public childFunction() {}
   protected childProtectedFunction() {}
 }
 

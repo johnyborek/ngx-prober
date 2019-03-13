@@ -9,7 +9,7 @@ export class SampleDirective implements OnInit {
   constructor(private el: ElementRef, private someService: SomeService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.el.nativeElement.innerHTML = this.someService.getText();
   }
 }

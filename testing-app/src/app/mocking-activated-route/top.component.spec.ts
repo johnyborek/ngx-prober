@@ -9,7 +9,7 @@ describe('ActivatedRouteStub', () => {
       {provide: ActivatedRoute, useClass: ActivatedRouteStub}
     ],
     fixtureInit: () => {
-      const activatedRouteStub: ActivatedRouteStub = <any>probe.get(ActivatedRoute);
+      const activatedRouteStub: ActivatedRouteStub = probe.get(ActivatedRoute) as any;
       activatedRouteStub.testParamMap = {myUrlParam: 'my-param-value'};
     }
   });

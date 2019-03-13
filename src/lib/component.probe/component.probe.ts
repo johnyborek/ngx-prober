@@ -10,11 +10,13 @@ class ComponentProbeInitializer<C> {
   private componentProviders: Map<Type<any>, any[]> = new Map();
   private directiveProviders: Map<Type<any>, any[]> = new Map();
 
-  constructor(private componentType: Type<C>, private componentModule: Type<any>,
-              private config: ComponentProbeConfig) {
-  }
+  constructor(
+    private componentType: Type<C>,
+    private componentModule: Type<any>,
+    private config: ComponentProbeConfig,
+  ) {}
 
-  initAsync(): typeof TestBed {
+  public initAsync(): typeof TestBed {
     this.createProviderMocks();
     this.extractScopedProviders('component', this.componentProviders);
     this.extractScopedProviders('directive', this.directiveProviders);
@@ -25,7 +27,7 @@ class ComponentProbeInitializer<C> {
   }
 
   private createProviderMocks(): void {
-    this.config.providers.forEach((provider) => {
+    this.config.providers.forEach(provider => {
       if (provider.mock === true) {
         provider.useValue = mock(provider.provide);
       }
@@ -59,9 +61,9 @@ class ComponentProbeInitializer<C> {
 
   private configureTestingModule(): void {
     this.testBed = TestBed.configureTestingModule({
-      imports: <any>this.config.modules,
+      imports: this.config.modules as any,
       providers: this.config.providers,
-      declarations: this.config.declarations
+      declarations: this.config.declarations,
     });
     this.addComponentProviders();
     this.addDirectiveProviders();
@@ -72,8 +74,8 @@ class ComponentProbeInitializer<C> {
     this.componentProviders.forEach((providers, componentType) => {
       this.testBed.overrideComponent(componentType, {
         set: {
-          providers: providers
-        }
+          providers,
+        },
       });
     });
   }
@@ -82,13 +84,13 @@ class ComponentProbeInitializer<C> {
     this.directiveProviders.forEach((providers, directiveType) => {
       this.testBed.overrideDirective(directiveType, {
         set: {
-          providers: providers
-        }
+          providers,
+        },
       });
     });
   }
 
-  private mockComponents(types: Type<any>[]): void {
+  private mockComponents(types: Array<Type<any>>): void {
     types.forEach(type => {
       this.testBed.overrideTemplate(type, '<span>mock of ' + type.name);
     });
@@ -96,13 +98,17 @@ class ComponentProbeInitializer<C> {
 }
 
 export class ComponentProbe<C> {
-  testBed: typeof TestBed;
-  fixture: ComponentFixture<C>;
-  component: C;
-  nativeElement: HTMLElement;
-  debugElement: DebugElement;
+  public testBed: typeof TestBed;
+  public fixture: ComponentFixture<C>;
+  public component: C;
+  public nativeElement: HTMLElement;
+  public debugElement: DebugElement;
 
-  constructor(private componentType: Type<C>, private componentModule: Type<any>, private config?: ComponentProbeConfig) {
+  constructor(
+    private componentType: Type<C>,
+    private componentModule: Type<any>,
+    private config?: ComponentProbeConfig,
+  ) {
     beforeEach(async(() => {
       this.testBed = new ComponentProbeInitializer(this.componentType, this.componentModule, this.config).initAsync();
     }));
@@ -120,15 +126,16 @@ export class ComponentProbe<C> {
     }
   }
 
-  get<T>(type: Type<T>): T {
+  public get<T>(type: Type<T>): T {
     if (this.debugElement) {
       return this.debugElement.injector.get(type);
     }
     return this.testBed.get(type);
   }
 
-  getFromChildComponent<T>(type: Type<T>, childComponentType: Type<any>): T {
-    const debugElements = this.debugElement.queryAll(By.all())
+  public getFromChildComponent<T>(type: Type<T>, childComponentType: Type<any>): T {
+    const debugElements = this.debugElement
+      .queryAll(By.all())
       .filter(e => e.componentInstance instanceof childComponentType);
 
     if (debugElements.length > 0) {
@@ -138,7 +145,7 @@ export class ComponentProbe<C> {
     throw new Error('No component instance exists for type ' + childComponentType.name);
   }
 
-  getFromDirective<T>(type: Type<T>, directiveType: Type<any>): T {
+  public getFromDirective<T>(type: Type<T>, directiveType: Type<any>): T {
     const debugElements = this.debugElement.queryAll(By.directive(directiveType));
 
     if (debugElements.length > 0) {
@@ -148,15 +155,15 @@ export class ComponentProbe<C> {
     throw new Error('No directive instance exists for type ' + directiveType.name);
   }
 
-  detectChanges(): void {
+  public detectChanges(): void {
     this.fixture.detectChanges();
   }
 
-  queryByCss(css: string): DebugElement {
+  public queryByCss(css: string): DebugElement {
     return this.debugElement.query(By.css(css));
   }
 
-  queryAllByCss(css: string): DebugElement[] {
+  public queryAllByCss(css: string): DebugElement[] {
     return this.debugElement.queryAll(By.css(css));
   }
 }

@@ -2,7 +2,10 @@ import { Type } from '@angular/core';
 import { ComponentProbe } from './lib/component.probe/component.probe';
 import { ComponentProbeConfig, defaultComponentProbeConfig } from './lib/component.probe/component.probe.config';
 import { HttpServiceProbe } from './lib/http-service.probe/http-service.probe';
-import { defaultHttpServiceProbeConfig, HttpServiceProbeConfig } from './lib/http-service.probe/http-service.probe.config';
+import {
+  defaultHttpServiceProbeConfig,
+  HttpServiceProbeConfig,
+} from './lib/http-service.probe/http-service.probe.config';
 import { Mocker } from './lib/mock/mocker';
 import Spy = jasmine.Spy;
 
@@ -14,11 +17,15 @@ export * from './lib/router-utils/activated-route.stub';
 
 function cloneDefaultConfig<T>(o: T) {
   const clone = JSON.parse(JSON.stringify(o));
-  clone.fixtureInit = (<any>o).fixtureInit;
+  clone.fixtureInit = (o as any).fixtureInit;
   return clone;
 }
 
-export function probeComponent<C>(componentType: Type<C>, componentModule?: Type<any>, probeConfig?: ComponentProbeConfig): ComponentProbe<C> {
+export function probeComponent<C>(
+  componentType: Type<C>,
+  componentModule?: Type<any>,
+  probeConfig?: ComponentProbeConfig,
+): ComponentProbe<C> {
   const config = Object.assign({}, cloneDefaultConfig(defaultComponentProbeConfig), probeConfig);
   return new ComponentProbe<C>(componentType, componentModule, config);
 }

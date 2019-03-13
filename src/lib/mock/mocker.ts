@@ -3,10 +3,10 @@ import Spy = jasmine.Spy;
 import createSpy = jasmine.createSpy;
 
 export class Mocker {
-  static createMock<T>(type: Type<T>): T {
-    const mockedInstance = <T>{};
+  public static createMock<T>(type: Type<T>): T {
+    const mockedInstance = {} as T;
     Mocker.getAllPrototypes(type.prototype).forEach(prototype => {
-      if (typeof(prototype) === 'object') {
+      if (typeof prototype === 'object') {
         Object.getOwnPropertyNames(prototype).forEach((name: string) => {
           Mocker.mockFunction(prototype, name, mockedInstance);
         });
@@ -29,18 +29,17 @@ export class Mocker {
     if (typeof descriptor.value === 'function') {
       mockedInstance[propertyName] = createSpy(propertyName);
       if (propertyName === 'constructor') {
-        const functionDef = descriptor.value.toString();
+        const functionDef = (descriptor.value as any).toString();
         propertyName = functionDef.substring('function '.length, functionDef.indexOf('('));
         mockedInstance[propertyName] = createSpy(propertyName);
       }
     }
   }
 
-  static castToSpy(functionRef: Function): Spy {
-    if (typeof functionRef !== 'function' || !(<any>functionRef).and) {
+  public static castToSpy(functionRef: Function): Spy {
+    if (typeof functionRef !== 'function' || !(functionRef as any).and) {
       throw new Error('Given functionRef is not a Jasmine Spy.');
     }
-    return <Spy>functionRef;
+    return functionRef as Spy;
   }
 }
-

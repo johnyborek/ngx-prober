@@ -3,9 +3,9 @@ import { Type } from '@angular/core';
 export interface ComponentProbeConfig {
   providers?: any[];
   fixtureInit?: () => void;
-  modules?: Type<any>[];
-  mockedComponents?: Type<any>[];
-  declarations?: Type<any>[];
+  modules?: Array<Type<any>>;
+  mockedComponents?: Array<Type<any>>;
+  declarations?: Array<Type<any>>;
   includeNoopAnimationModule?: boolean;
   detectChangesOnInit?: boolean;
 }
@@ -17,5 +17,5 @@ export const defaultComponentProbeConfig: ComponentProbeConfig = {
   mockedComponents: [],
   declarations: [],
   includeNoopAnimationModule: true,
-  detectChangesOnInit: true
+  detectChangesOnInit: true,
 };
