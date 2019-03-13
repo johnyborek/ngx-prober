@@ -6,7 +6,8 @@
         "name": "Rafal Borek",
         "email": "rr.borek@gmail.com"
     },
-    "main": "index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/johnyborek/ngx-prober.git"
@@ -31,13 +32,12 @@
     ],
     "scripts": {
         "clean": "rimraf ./dist && rimraf ./target",
-        "build": "tsc",
+        "build": "tsc && npm run copy-files",
         "copy-files": "cpx \"./target/tsc-out/src/lib/**/*.*\" ./dist/lib && cpx \"./target/tsc-out/src/index.*\" ./dist",
         "test": "cd testing-app && ng test --code-coverage && cd ..",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
-        "ng-lint": "ng lint",
-        "dist": "npm run clean && npm run lint && npm test && npm run build && npm run copy-files"
+        "prepare": "npm run clean && npm run lint && npm test && npm run build"
     },
     "peerDependencies": {
         "@angular/common": ">=6",
