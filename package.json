@@ -24,11 +24,11 @@
     ],
     "license": "MIT",
     "bugs": {
-      "url": "https://github.com/johnyborek/ngx-prober/issues"
+        "url": "https://github.com/johnyborek/ngx-prober/issues"
     },
     "homepage": "https://github.com/johnyborek/ngx-prober",
     "files": [
-      "dist/**/*"
+        "dist/**/*"
     ],
     "scripts": {
         "clean": "rimraf ./dist && rimraf ./target",
@@ -48,20 +48,6 @@
         "@types/jasmine": ">=2",
         "jasmine-core": ">=2",
         "rxjs": ">=6"
-    },
-    "dependencies": {
-        "@angular/animations": "^7.2.8",
-        "@angular/common": "^7.2.8",
-        "@angular/compiler": "^7.2.8",
-        "@angular/core": "^7.2.8",
-        "@angular/forms": "^7.2.8",
-        "@angular/http": "^7.2.8",
-        "@angular/platform-browser": "^7.2.8",
-        "@angular/platform-browser-dynamic": "^7.2.8",
-        "@angular/router": "^7.2.8",
-        "core-js": "^2.6.5",
-        "rxjs": "^6.4.0",
-        "zone.js": "^0.8.29"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.13.5",
@@ -85,7 +71,19 @@
         "run-sequence": "^2.2.1",
         "ts-node": "^8.0.3",
         "tslint": "^5.13.1",
-        "typescript": "~3.1.0"
+        "typescript": "~3.1.0",
+        "@angular/animations": "^7.2.8",
+        "@angular/common": "^7.2.8",
+        "@angular/compiler": "^7.2.8",
+        "@angular/core": "^7.2.8",
+        "@angular/forms": "^7.2.8",
+        "@angular/http": "^7.2.8",
+        "@angular/platform-browser": "^7.2.8",
+        "@angular/platform-browser-dynamic": "^7.2.8",
+        "@angular/router": "^7.2.8",
+        "core-js": "^2.6.5",
+        "rxjs": "^6.4.0",
+        "zone.js": "^0.8.29"
     },
     "readme": "README.md"
 }
