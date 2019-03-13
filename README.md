@@ -1,4 +1,11 @@
 # ngx-prober
+![GitHub](https://img.shields.io/github/license/johnyborek/ngx-prober.svg)
+![GitHub issues](https://img.shields.io/github/issues/johnyborek/ngx-prober.svg)
+![npm](https://img.shields.io/npm/dt/ngx-prober.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/johnyborek/ngx-prober.svg)
+![npm bundle size](https://img.shields.io/bundlephobia/min/ngx-prober.svg)
+![npm](https://img.shields.io/npm/v/ngx-prober.svg?color=blue)
+![GitHub stars](https://img.shields.io/github/stars/johnyborek/ngx-prober.svg?style=social)
 
 Library for improving Unit Tests of Angular 2+ projects. It provides the following functionality:
 * Cleaner and simpler API for testing Angular projects. 
