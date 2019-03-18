@@ -1,3 +1,11 @@
+# 0.1.1
+
+## Features
+- ActivatedRouteStub supports 'queryParams' and 'queryParamMap' properties
+
+## Other
+- Fixes reported by npm audit
+
 # 0.1.0
 
 ## Features
