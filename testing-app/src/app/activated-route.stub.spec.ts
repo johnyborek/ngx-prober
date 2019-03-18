@@ -1,6 +1,6 @@
 import { ActivatedRouteStub } from '../../../src/lib/router-utils/activated-route.stub';
 
-fdescribe('ActivatedRouteStub', () => {
+describe('ActivatedRouteStub', () => {
   it('should provide route params', (done) => {
     const routeStub = new ActivatedRouteStub();
     routeStub.testParamMap = {param1: 'my-val', param2: 'another-val'};
