@@ -1,3 +1,7 @@
+# 1.0.0
+
+Promoting to stable release
+
 # 0.1.1
 
 ## Features
