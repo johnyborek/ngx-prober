@@ -1,6 +1,6 @@
 {
     "name": "ngx-prober",
-    "version": "1.0.0",
+    "version": "1.0.1-beta",
     "description": "Library for easy and simple Angular testing",
     "author": {
         "name": "Rafal Borek",
